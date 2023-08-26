@@ -1,23 +1,19 @@
 import 'package:flutter/material.dart'; // Biblioteca que tem dentro do Dart que consegue buscar funções, classes, objetos que será necessário usar
 
 void main() => runApp(
-      Column(
-        children: [
-          Text(
-            'Bem Vindo ao primeiro Texto Flutter!',
-            textDirection: TextDirection
-                .ltr, // Ao inserir um texto o Dart pede a direção do Texto. Neste caso está sendo informado que será lido da esquerda para direita
-          ),
-          Text(
-            'Bem Vindo ao segundo Texto Flutter!',
-            textDirection: TextDirection
-                .ltr, // Ao inserir um texto o Dart pede a direção do Texto. Neste caso está sendo informado que será lido da esquerda para direita
-          ),
-          Expanded(
-              child: FittedBox(
-            fit: BoxFit.contain,
-            child: const FlutterLogo(),
-          ))
-        ],
-      ),
-    );
+        // Ao usar o Material App, não será mais necessário passar o textDirection
+        MaterialApp(
+            // Scaffold seria o esqueleto da aplicação. Sempre colocado após o home
+            home: Scaffold(
+              body: Card(
+                child: Text('Teste'),
+              ),
+              appBar: AppBar(
+                title: const Text('Transferências'),
+              ),
+              floatingActionButton: FloatingActionButton(
+                // onPressed ficará a função ...
+                onPressed: () {},
+                child: const Icon(Icons.add),
+              ),
+            )));
