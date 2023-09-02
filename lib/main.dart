@@ -1,22 +1,55 @@
 import 'package:flutter/material.dart'; // Biblioteca que tem dentro do Dart que consegue buscar funções, classes, objetos que será necessário usar
 
-void main() => runApp(
-        // Ao usar o Material App, não será mais necessário passar o textDirection
-        MaterialApp(
-            // Scaffold seria o esqueleto da aplicação. Sempre colocado após o home
-            home: Scaffold(
-      body: ListaTransferencias(),
-      appBar: AppBar(
-        title: const Text('Transferências'),
-        backgroundColor: const Color.fromARGB(221, 9, 16, 77),
-      ),
-      floatingActionButton: FloatingActionButton(
-        // onPressed ficará a função ...
-        onPressed: () {},
-        backgroundColor: const Color.fromARGB(221, 9, 16, 77),
-        child: const Icon(Icons.add),
-      ),
-    )));
+void main() {
+  runApp(BankApp());
+}
+
+class BankApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    //Hot reload
+    // TODO: implement build
+    // Ao usar o Material App, não será mais necessário passar o textDirection
+    return MaterialApp(
+        debugShowCheckedModeBanner: false, //Retirando a tarja vermelha do Debug
+        // Scaffold seria o esqueleto da aplicação. Sempre colocado após o home
+        home: Scaffold(
+          body: FormularioTransferencia(),
+        ));
+  }
+}
+
+class FormularioTransferencia extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    // TODO: implement build
+    return Scaffold(
+        appBar: AppBar(
+          title: const Text('Criando Transferência'),
+          backgroundColor: const Color.fromARGB(221, 9, 16, 77),
+        ),
+        body: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Column(
+                children: [
+                  TextField(
+                    decoration: InputDecoration(
+                        labelText: 'Número da conta', hintText: '0000'),
+                  ),
+                  TextField(
+                    decoration: InputDecoration(
+                        labelText: 'Valor Transferência',
+                        hintText: '000000000000000.00'),
+                  ),
+                ],
+              ),
+            )
+          ],
+        ));
+  }
+}
 
 // StatelessWidget renderização do estado atual
 // Stateless é um widget estático
@@ -26,12 +59,24 @@ class ListaTransferencias extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    return Column(
-      children: [
-        ItemTransferencia(Transferencia(valor: 1000, numeroConta: 1234)),
-        ItemTransferencia(Transferencia(valor: 355.75, numeroConta: 1122)),
-        ItemTransferencia(Transferencia(numeroConta: 3465, valor: 3456.78))
-      ],
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Transferências'),
+        backgroundColor: const Color.fromARGB(221, 9, 16, 77),
+      ),
+      body: Column(
+        children: [
+          ItemTransferencia(Transferencia(valor: 1000, numeroConta: 1234)),
+          ItemTransferencia(Transferencia(valor: 355.75, numeroConta: 1122)),
+          ItemTransferencia(Transferencia(numeroConta: 3465, valor: 3456.78))
+        ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        // onPressed ficará a função ...
+        onPressed: () {},
+        backgroundColor: const Color.fromARGB(221, 9, 16, 77),
+        child: const Icon(Icons.add),
+      ),
     );
   }
 }
