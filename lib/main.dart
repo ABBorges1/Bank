@@ -20,6 +20,10 @@ class BankApp extends StatelessWidget {
 }
 
 class FormularioTransferencia extends StatelessWidget {
+  final TextEditingController _controladorCampoNumeroConta =
+      TextEditingController();
+  final TextEditingController _controladorCampoValor = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -31,20 +35,46 @@ class FormularioTransferencia extends StatelessWidget {
         body: Column(
           children: [
             Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: Column(
-                children: [
-                  TextField(
-                    decoration: InputDecoration(
-                        labelText: 'Número da conta', hintText: '0000'),
-                  ),
-                  TextField(
-                    decoration: InputDecoration(
-                        labelText: 'Valor Transferência',
-                        hintText: '000000000000000.00'),
-                  ),
-                ],
+              padding: const EdgeInsets.fromLTRB(
+                  8.0, 2.0, 8.0, 2.0), //All todos os lados
+              child: TextField(
+                controller: _controladorCampoNumeroConta,
+                style: TextStyle(fontSize: 24.0),
+                decoration: InputDecoration(
+                    labelText: 'Número da conta',
+                    hintText: '0000',
+                    icon: Icon(
+                      Icons.account_balance_rounded,
+                      color: Color.fromARGB(255, 6, 63, 109),
+                    )),
+                keyboardType: TextInputType.number,
               ),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(
+                  8.0, 2.0, 8.0, 2.0), //All todos os lados
+              child: TextField(
+                controller: _controladorCampoValor,
+                style: TextStyle(fontSize: 24.0),
+                decoration: InputDecoration(
+                    labelText: 'Valor',
+                    hintText: '0',
+                    icon: Icon(
+                      Icons.monetization_on,
+                      color: Colors.green,
+                    )),
+                keyboardType: TextInputType.number,
+              ),
+            ),
+            ElevatedButton(
+              child: Text('Confirmar'),
+              onPressed: () {
+                final int numeroConta =
+                    int.parse(_controladorCampoNumeroConta.text);
+                final double valor = double.parse(_controladorCampoValor.text);
+
+                Transferencia(numeroConta: numeroConta, valor: valor);
+              },
             )
           ],
         ));
