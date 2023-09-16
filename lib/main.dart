@@ -1,3 +1,5 @@
+//import 'dart:html';
+
 import 'package:flutter/material.dart'; // Biblioteca que tem dentro do Dart que consegue buscar funções, classes, objetos que será necessário usar
 
 void main() {
@@ -34,46 +36,30 @@ class FormularioTransferencia extends StatelessWidget {
         ),
         body: Column(
           children: [
-            Padding(
-              padding: const EdgeInsets.fromLTRB(
-                  8.0, 2.0, 8.0, 2.0), //All todos os lados
-              child: TextField(
-                controller: _controladorCampoNumeroConta,
-                style: TextStyle(fontSize: 24.0),
-                decoration: InputDecoration(
-                    labelText: 'Número da conta',
-                    hintText: '0000',
-                    icon: Icon(
-                      Icons.account_balance_rounded,
-                      color: Color.fromARGB(255, 6, 63, 109),
-                    )),
-                keyboardType: TextInputType.number,
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(
-                  8.0, 2.0, 8.0, 2.0), //All todos os lados
-              child: TextField(
-                controller: _controladorCampoValor,
-                style: TextStyle(fontSize: 24.0),
-                decoration: InputDecoration(
-                    labelText: 'Valor',
-                    hintText: '0',
-                    icon: Icon(
-                      Icons.monetization_on,
-                      color: Colors.green,
-                    )),
-                keyboardType: TextInputType.number,
-              ),
-            ),
+            Editor(
+                _controladorCampoNumeroConta,
+                Icon(Icons.account_balance_rounded,
+                    color: Color.fromARGB(255, 6, 63, 109)),
+                'Número da Conta',
+                '0000'),
+            Editor(
+                _controladorCampoValor,
+                Icon(Icons.monetization_on, color: Colors.green),
+                'Valor',
+                '0.00'),
             ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                  backgroundColor: Color.fromARGB(221, 9, 16, 77)),
               child: Text('Confirmar'),
               onPressed: () {
                 final int numeroConta =
                     int.parse(_controladorCampoNumeroConta.text);
                 final double valor = double.parse(_controladorCampoValor.text);
-
-                Transferencia(numeroConta: numeroConta, valor: valor);
+                if (numeroConta != null && valor != null) {
+                  final transferenciaCriada =
+                      Transferencia(numeroConta: numeroConta, valor: valor);
+                  debugPrint('$transferenciaCriada');
+                }
               },
             )
           ],
@@ -139,4 +125,37 @@ class Transferencia {
   final int? numeroConta;
 
   Transferencia({this.valor, this.numeroConta});
+
+  @override
+  String toString() {
+    return 'Transferência{Valor: $valor, Número da Conta: $numeroConta}';
+  }
+}
+
+class Editor extends StatelessWidget {
+  final TextEditingController? _controlador;
+  final Icon? _icon;
+  final String? _rotulo;
+  final String? _dica;
+
+  Editor(this._controlador, this._icon, this._rotulo, this._dica);
+
+  @override
+  Widget build(BuildContext context) {
+    // TODO: implement build
+    return Padding(
+      padding:
+          const EdgeInsets.fromLTRB(8.0, 2.0, 8.0, 2.0), //All todos os lados
+      child: TextField(
+        controller: _controlador,
+        style: TextStyle(fontSize: 24.0),
+        decoration: InputDecoration(
+          labelText: _rotulo,
+          hintText: _dica,
+          icon: _icon,
+        ),
+        keyboardType: TextInputType.number,
+      ),
+    );
+  }
 }
