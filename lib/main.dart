@@ -37,16 +37,16 @@ class FormularioTransferencia extends StatelessWidget {
         body: Column(
           children: [
             Editor(
-                _controladorCampoNumeroConta,
-                Icon(Icons.account_balance_rounded,
-                    color: Color.fromARGB(255, 6, 63, 109)),
-                'Número da Conta',
-                '0000'),
+                controlador: _controladorCampoNumeroConta,
+                icon: Icon(Icons.account_balance_rounded,
+                color: Color.fromARGB(255, 6, 63, 109)),
+                rotulo: 'Número da Conta',
+                dica: '0000'),
             Editor(
-                _controladorCampoValor,
-                Icon(Icons.monetization_on, color: Colors.green),
-                'Valor',
-                '0.00'),
+                controlador: _controladorCampoValor,
+                icon: Icon(Icons.monetization_on, color: Colors.green),
+                rotulo: 'Valor',
+                dica: '0.00'),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
                   backgroundColor: Color.fromARGB(221, 9, 16, 77)),
@@ -133,12 +133,12 @@ class Transferencia {
 }
 
 class Editor extends StatelessWidget {
-  final TextEditingController? _controlador;
-  final Icon? _icon;
-  final String? _rotulo;
-  final String? _dica;
+  final TextEditingController? controlador;
+  final Icon? icon;
+  final String? rotulo;
+  final String? dica;
 
-  Editor(this._controlador, this._icon, this._rotulo, this._dica);
+  Editor({this.controlador, this.icon, this.rotulo, this.dica});
 
   @override
   Widget build(BuildContext context) {
@@ -147,12 +147,12 @@ class Editor extends StatelessWidget {
       padding:
           const EdgeInsets.fromLTRB(8.0, 2.0, 8.0, 2.0), //All todos os lados
       child: TextField(
-        controller: _controlador,
+        controller: controlador,
         style: TextStyle(fontSize: 24.0),
         decoration: InputDecoration(
-          labelText: _rotulo,
-          hintText: _dica,
-          icon: _icon,
+          labelText: rotulo,
+          hintText: dica,
+          icon: icon,
         ),
         keyboardType: TextInputType.number,
       ),
