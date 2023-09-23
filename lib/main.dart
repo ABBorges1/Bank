@@ -39,7 +39,7 @@ class FormularioTransferencia extends StatelessWidget {
             Editor(
                 controlador: _controladorCampoNumeroConta,
                 icon: Icon(Icons.account_balance_rounded,
-                color: Color.fromARGB(255, 6, 63, 109)),
+                    color: Color.fromARGB(255, 6, 63, 109)),
                 rotulo: 'Número da Conta',
                 dica: '0000'),
             Editor(
@@ -52,13 +52,17 @@ class FormularioTransferencia extends StatelessWidget {
                   backgroundColor: Color.fromARGB(221, 9, 16, 77)),
               child: Text('Confirmar'),
               onPressed: () {
-                final int numeroConta =
-                    int.parse(_controladorCampoNumeroConta.text);
-                final double valor = double.parse(_controladorCampoValor.text);
-                if (numeroConta != null && valor != null) {
-                  final transferenciaCriada =
-                      Transferencia(numeroConta: numeroConta, valor: valor);
-                  debugPrint('$transferenciaCriada');
+                void _criaTransferencia(
+                    _controladorCampoNumeroConta, _controladorCampoValor) {
+                  final int numeroConta =
+                      int.parse(_controladorCampoNumeroConta.text);
+                  final double valor =
+                      double.parse(_controladorCampoValor.text);
+                  if (numeroConta != null && valor != null) {
+                    final transferenciaCriada =
+                        Transferencia(numeroConta: numeroConta, valor: valor);
+                    debugPrint('$transferenciaCriada');
+                  }
                 }
               },
             )
