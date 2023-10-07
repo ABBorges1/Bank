@@ -34,34 +34,36 @@ class FormularioTransferencia extends StatelessWidget {
           title: const Text('Criando Transferência'),
           backgroundColor: const Color.fromARGB(221, 9, 16, 77),
         ),
-        body: Column(
-          children: [
-            Editor(
-                controlador: _controladorCampoNumeroConta,
-                icon: Icon(Icons.account_balance_rounded,
-                    color: Color.fromARGB(255, 6, 63, 109)),
-                rotulo: 'Número da Conta',
-                dica: '0000'),
-            Editor(
-                controlador: _controladorCampoValor,
-                icon: Icon(Icons.monetization_on, color: Colors.green),
-                rotulo: 'Valor',
-                dica: '0.00'),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                  backgroundColor: Color.fromARGB(221, 9, 16, 77)),
-              child: Text('Confirmar'),
-              onPressed: () {
-                _criaTransferencia(context,
-                    _controladorCampoNumeroConta, _controladorCampoValor);
-              },
-            )
-          ],
+        body: SingleChildScrollView(
+          child: Column(
+            children: [
+              Editor(
+                  controlador: _controladorCampoNumeroConta,
+                  icon: Icon(Icons.account_balance_rounded,
+                      color: Color.fromARGB(255, 6, 63, 109)),
+                  rotulo: 'Número da Conta',
+                  dica: '0000'),
+              Editor(
+                  controlador: _controladorCampoValor,
+                  icon: Icon(Icons.monetization_on, color: Colors.green),
+                  rotulo: 'Valor',
+                  dica: '0.00'),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                    backgroundColor: Color.fromARGB(221, 9, 16, 77)),
+                child: Text('Confirmar'),
+                onPressed: () {
+                  _criaTransferencia(context, _controladorCampoNumeroConta,
+                      _controladorCampoValor);
+                },
+              )
+            ],
+          ),
         ));
   }
 
-  void _criaTransferencia(BuildContext context,
-      _controladorCampoNumeroConta, _controladorCampoValor) {
+  void _criaTransferencia(BuildContext context, _controladorCampoNumeroConta,
+      _controladorCampoValor) {
     final int numeroConta = int.parse(_controladorCampoNumeroConta.text);
     final double valor = double.parse(_controladorCampoValor.text);
     if (numeroConta != null && valor != null) {
@@ -76,25 +78,36 @@ class FormularioTransferencia extends StatelessWidget {
 // StatelessWidget renderização do estado atual
 // Stateless é um widget estático
 // Stateful é completamente dinâmico
-class ListaTransferencias extends StatelessWidget {
+class ListaTransferencias extends StatefulWidget {
+  final List<Transferencia> _transferencia = [];  
+
+  @override
+  State<StatefulWidget> createState() {
+    // TODO: implement createState
+    return ListaTransferenciaState();
+  }  
+}
+
+class ListaTransferenciaState extends State<ListaTransferencias>{
   // Construção do widget
   @override
   Widget build(BuildContext context) {
+    //widget._transferencia.add(Transferencia(valor: 100, numeroConta: 1234));
     // TODO: implement build
     return Scaffold(
       appBar: AppBar(
         title: const Text('Transferências'),
         backgroundColor: const Color.fromARGB(221, 9, 16, 77),
       ),
-      body: Column(
-        children: [
-          ItemTransferencia(Transferencia(valor: 1000, numeroConta: 1234)),
-          ItemTransferencia(Transferencia(valor: 355.75, numeroConta: 1122)),
-          ItemTransferencia(Transferencia(numeroConta: 3465, valor: 3456.78))
-        ],
+      body: ListView.builder(
+        itemCount: widget._transferencia.length,
+        itemBuilder: (context, indice) {
+          final transferencia = widget._transferencia[indice];
+          return ItemTransferencia(transferencia);
+        },
+        //prototypeItem: ItemTransferencia(Transferencia(valor: 1000, numeroConta: 1234)),
       ),
       floatingActionButton: FloatingActionButton(
-        // onPressed ficará a função ...
         onPressed: () {
           final Future<Transferencia?> future =
               Navigator.push(context, MaterialPageRoute(builder: (context) {
@@ -103,6 +116,11 @@ class ListaTransferencias extends StatelessWidget {
           future.then((transferenciaRecebida) {
             debugPrint('Chegou');
             debugPrint('$transferenciaRecebida');
+            if (transferenciaRecebida != null){
+              setState(() {
+                widget._transferencia.add(transferenciaRecebida);
+              });
+            }
           });
         },
         backgroundColor: const Color.fromARGB(221, 9, 16, 77),
