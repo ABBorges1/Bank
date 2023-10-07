@@ -16,7 +16,7 @@ class BankApp extends StatelessWidget {
         debugShowCheckedModeBanner: false, //Retirando a tarja vermelha do Debug
         // Scaffold seria o esqueleto da aplicação. Sempre colocado após o home
         home: Scaffold(
-          body: FormularioTransferencia(),
+          body: ListaTransferencias(),
         ));
   }
 }
@@ -52,22 +52,24 @@ class FormularioTransferencia extends StatelessWidget {
                   backgroundColor: Color.fromARGB(221, 9, 16, 77)),
               child: Text('Confirmar'),
               onPressed: () {
-                void _criaTransferencia(
-                    _controladorCampoNumeroConta, _controladorCampoValor) {
-                  final int numeroConta =
-                      int.parse(_controladorCampoNumeroConta.text);
-                  final double valor =
-                      double.parse(_controladorCampoValor.text);
-                  if (numeroConta != null && valor != null) {
-                    final transferenciaCriada =
-                        Transferencia(numeroConta: numeroConta, valor: valor);
-                    debugPrint('$transferenciaCriada');
-                  }
-                }
+                _criaTransferencia(context,
+                    _controladorCampoNumeroConta, _controladorCampoValor);
               },
             )
           ],
         ));
+  }
+
+  void _criaTransferencia(BuildContext context,
+      _controladorCampoNumeroConta, _controladorCampoValor) {
+    final int numeroConta = int.parse(_controladorCampoNumeroConta.text);
+    final double valor = double.parse(_controladorCampoValor.text);
+    if (numeroConta != null && valor != null) {
+      final transferenciaCriada =
+          Transferencia(numeroConta: numeroConta, valor: valor);
+      debugPrint('$transferenciaCriada');
+      Navigator.pop(context, transferenciaCriada);
+    }
   }
 }
 
@@ -93,7 +95,16 @@ class ListaTransferencias extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         // onPressed ficará a função ...
-        onPressed: () {},
+        onPressed: () {
+          final Future<Transferencia?> future =
+              Navigator.push(context, MaterialPageRoute(builder: (context) {
+            return FormularioTransferencia();
+          }));
+          future.then((transferenciaRecebida) {
+            debugPrint('Chegou');
+            debugPrint('$transferenciaRecebida');
+          });
+        },
         backgroundColor: const Color.fromARGB(221, 9, 16, 77),
         child: const Icon(Icons.add),
       ),
